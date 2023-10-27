@@ -88,6 +88,14 @@ export default {
       },
     };
   },
+  created() {
+    let productId = this.$route.params.id;
+    if (productId) {
+      this.getInfoProduct(productId);
+    }
+    console.log(this.product);
+  },
+
   methods: {
     validate() {
       let isValid = true;
@@ -118,7 +126,20 @@ export default {
     },
     save() {
       if (this.validate()) {
-        console.log(this.product);
+        console.log(this.$route.params.id);
+        if (this.$route.params.id) {
+          this.$request
+            .put(
+              `http://localhost:8000/api/products/${this.$route.params.id}`,
+              this.product
+            )
+            .then((res) => {
+              console.log(res);
+              this.$router.push({ name: "product.list" });
+              return;
+            });
+          return;
+        }
         this.$request
           .post("http://localhost:8000/api/products", this.product)
           .then((res) => {
@@ -127,6 +148,11 @@ export default {
             return;
           });
       }
+    },
+    getInfoProduct(productId) {
+      this.$request
+        .get(`http://localhost:8000/api/products/${productId}`)
+        .then((res) => (this.product = res.data));
     },
   },
 };

@@ -21,7 +21,11 @@
             <td>{{ product.name }}</td>
             <td>{{ product.price }}</td>
             <td>
-              <button class="btn btn-primary">Edit</button> &nbsp;
+              <RouterLink
+                :to="{ name: 'product.edit', params: { id: product.id } }"
+              >
+                <button class="btn btn-primary">Edit</button> </RouterLink
+              >&nbsp;
               <button
                 class="btn btn-danger"
                 @click="onDelete(product.id, product.name)"
